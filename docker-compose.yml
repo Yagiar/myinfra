@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  openproject:
+    image: openproject/openproject:16
+    # Expose the internal port only to the Docker network. Nginx will publish it securely.
+    expose:
+      - "80"
+    environment:
+      OPENPROJECT_SECRET_KEY_BASE: secret
+      OPENPROJECT_HOST__NAME: localhost:8999
+      OPENPROJECT_HTTPS: "true"
+      OPENPROJECT_DEFAULT__LANGUAGE: ru
+    volumes:
+      - openproject_pgdata:/var/lib/postgresql/13/main
+      - openproject_data:/var/openproject/assets
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - openproject
+    ports:
+      # Expose HTTPS on the same host port Chrome is redirecting to
+      - "8999:443"
+    volumes:
+      # Custom nginx config and self-signed certificates
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
+    restart: unless-stopped
+
+volumes:
+  openproject_pgdata:
+  openproject_data:
