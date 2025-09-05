@@ -1,6 +1,6 @@
-# MyInfra §— OpenProject под Docker с Nginx-proxy
+# MyInfra
 
-Этот репозиторий разворачивает [OpenProject](https://www.openproject.org/) в Docker-контейнерах и проксирует его через Nginx c HTTPS.
+Этот репозиторий содержит инфра сервисы.
 
 ## Требования
 
@@ -14,15 +14,16 @@
 # 1. Клонируйте репозиторий
  git clone https://github.com/Yagiar/myinfra.git
  cd myinfra
-
+```
 # 2. Сгенерируйте (или используйте свои) сертификаты для localhost
- ./scripts/generate-self-signed.sh
-
+[Инструкция по генерации сертификатов](nginx/README.md)
 # 3. Запустите стэк в фоне
+ ```bash
  docker compose up -d
-
+```
 # 4. Откройте браузер
- open https://localhost:8999
+
+`https://localhost:8999`
 ```
 
 При первом запуске OpenProject попросит вас создать учётную запись администратора.
